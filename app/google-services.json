@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "817655537607",
+    "firebase_url": "https://goeswatini.firebaseio.com",
+    "project_id": "goeswatini",
+    "storage_bucket": "goeswatini.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817655537607:android:6f85ebbe8e193a81",
+        "android_client_info": {
+          "package_name": "com.goeswatini"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGQHNl2dI2hMuYGdAJzx2qVIrdinGXkkk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817655537607-9rm4lvurgjj8qvb29tbkde9l5diss6ip.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
