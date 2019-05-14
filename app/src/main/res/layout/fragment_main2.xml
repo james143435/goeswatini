@@ -26,7 +26,67 @@
               android:name="com.google.android.gms.maps.SupportMapFragment"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              tools:context="com.vogella.android.maps.MapsActivity"
+              tools:context=".Main2Activity"
     />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
+            android:id="@+id/item_ly"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:text=""
+                android:id="@+id/item_title"
+                android:textSize="24sp"
+                android:textColor="#ffffff"
+                android:layout_height="wrap_content"/>
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <Button
+                    android:layout_width="wrap_content"
+                    android:text="close"
+                    android:id="@+id/button_close"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_height="wrap_content"/>
+            <Button
+                    android:layout_width="wrap_content"
+                    android:id="@+id/navigate"
+                   android:layout_centerHorizontal="true"
+                    android:text="Navigate"
+                    android:layout_height="wrap_content"/>
+            <Button
+                    android:layout_width="wrap_content"
+                    android:text="view"
+                    android:id="@+id/button_view"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:layout_marginLeft="30sp" android:layout_width="wrap_content" android:textColor="#ffffff" android:layout_alignParentStart="true" android:textSize="20sp" android:layout_alignParentLeft="true" android:text="Chips" android:layout_height="wrap_content"/>
+                <Button android:layout_alignParentEnd="true" android:layout_alignParentRight="true" android:layout_width="wrap_content" android:text="Order" android:layout_height="wrap_content"/>
+            </RelativeLayout>
+            <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:layout_marginLeft="30sp" android:layout_width="wrap_content" android:textColor="#ffffff" android:layout_alignParentStart="true" android:textSize="20sp" android:layout_alignParentLeft="true" android:text="Chicken" android:layout_height="wrap_content"/>
+                <Button android:layout_alignParentEnd="true" android:layout_alignParentRight="true" android:layout_width="wrap_content" android:text="Order" android:layout_height="wrap_content"/>
+            </RelativeLayout>
+            <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:layout_marginLeft="30sp" android:layout_width="wrap_content" android:textColor="#ffffff" android:layout_alignParentStart="true" android:textSize="20sp" android:layout_alignParentLeft="true" android:text="Wings" android:layout_height="wrap_content"/>
+                <Button android:layout_alignParentEnd="true" android:layout_alignParentRight="true" android:layout_width="wrap_content" android:text="Order" android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

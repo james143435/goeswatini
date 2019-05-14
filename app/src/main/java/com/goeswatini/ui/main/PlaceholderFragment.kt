@@ -15,25 +15,32 @@ import android.location.Criteria
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.Toast
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.maps.SupportMapFragment
 import kotlinx.android.synthetic.main.item_list_content.view.*
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_main2.*
+
 val MY_PERMISSIONS_REQUEST_LOCATION = 1234
 
 
 /**
  * A placeholder fragment containing a simple view.
  */
-class PlaceholderFragment : Fragment() , LocationListener{
+class PlaceholderFragment : Fragment() , LocationListener {
 
     private lateinit var pageViewModel: PageViewModel
+    private lateinit var selectedLocation:LatLng
 
     override fun onLocationChanged(location: Location?) {
         Log.e("Location Chaged", "$location")
@@ -75,6 +82,14 @@ class PlaceholderFragment : Fragment() , LocationListener{
 
             val map = it
 
+            map.setOnInfoWindowClickListener {
+                Log.e("INFO WINDOW",it.title)
+                item_ly.visibility = View.VISIBLE
+                item_title.text = it.title
+                selectedLocation = it.position
+
+            }
+
 // check if enabled and if not send user to the GSP settings
 // Better solution would be to display a dialog and suggesting to
 // go to the settings
@@ -86,6 +101,16 @@ class PlaceholderFragment : Fragment() , LocationListener{
             val criteria = Criteria()
             val provider = locationManager.getBestProvider(criteria, false)
 
+            val db = FirebaseFirestore.getInstance()
+
+            navigate.setOnClickListener{
+                val gmmIntentUri = Uri.parse("google.navigation:q=${selectedLocation.latitude},${selectedLocation.longitude}")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
+
+            button_close.setOnClickListener { item_ly.visibility = View.GONE }
 
             try {
                 val location:Location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
@@ -96,6 +121,26 @@ class PlaceholderFragment : Fragment() , LocationListener{
                             .position(LatLng(it.latitude, it.longitude))
                             .title("Marker")
                     )
+
+                    map.mapType = GoogleMap.MAP_TYPE_NORMAL
+                     map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 9.0f));
+                    db
+                        .collection("aoi")
+                        .whereEqualTo("type","Restuarant")
+                        .get()
+                        .addOnSuccessListener {
+                            map.clear()
+                            for(doc in it){
+                                Log.e("Data from server",doc.data.toString())
+                                val loc = doc.data.get("location") as Map<String,Double>
+                                map.addMarker(
+                                    MarkerOptions()
+                                        .position(LatLng(loc.get("lat")!!,loc.get("lng")!!))
+                                        .title(doc.get("name") as String)
+                                )
+                            }
+
+                        }
                 }
             }catch (e:SecurityException ){
                 Log.e("Error",e.toString())
