@@ -41,6 +41,7 @@ class PlaceholderFragment : Fragment() , LocationListener {
 
     private lateinit var pageViewModel: PageViewModel
     private lateinit var selectedLocation:LatLng
+    private var inte:String = ""
 
     override fun onLocationChanged(location: Location?) {
         Log.e("Location Chaged", "$location")
@@ -62,8 +63,12 @@ class PlaceholderFragment : Fragment() , LocationListener {
         super.onCreate(savedInstanceState)
         requestPermission(android.Manifest.permission.ACCESS_FINE_LOCATION, MY_PERMISSIONS_REQUEST_LOCATION)
 
+
+
         pageViewModel = ViewModelProviders.of(this).get(PageViewModel::class.java).apply {
             setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
+
+            Log.e("Section","${Bundle().get(ARG_SECTION_NUMBER)}")
         }
     }
 
@@ -72,7 +77,11 @@ class PlaceholderFragment : Fragment() , LocationListener {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(com.goeswatini.R.layout.fragment_main2, container, false)
-        Log.e("ID","${com.goeswatini.R.id.map}")
+        if (savedInstanceState?.getString(ARG_SECTION_NUMBER) != null){
+            inte = savedInstanceState?.getString(ARG_SECTION_NUMBER)!!
+        }
+
+        Log.e("ID","INTE ${inte}")
         val mapView: SupportMapFragment = childFragmentManager.findFragmentById(com.goeswatini.R.id.map) as SupportMapFragment
         mapView.getMapAsync {
 
@@ -90,9 +99,6 @@ class PlaceholderFragment : Fragment() , LocationListener {
 
             }
 
-// check if enabled and if not send user to the GSP settings
-// Better solution would be to display a dialog and suggesting to
-// go to the settings
             if (!enabled) {
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
@@ -126,7 +132,7 @@ class PlaceholderFragment : Fragment() , LocationListener {
                      map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 9.0f));
                     db
                         .collection("aoi")
-                        .whereEqualTo("type","Restuarant")
+                        .whereEqualTo("type",inte)
                         .get()
                         .addOnSuccessListener {
                             map.clear()
@@ -166,10 +172,12 @@ class PlaceholderFragment : Fragment() , LocationListener {
          * number.
          */
         @JvmStatic
-        fun newInstance(sectionNumber: Int): PlaceholderFragment {
+        fun newInstance(sectionNumber: String): PlaceholderFragment {
             return PlaceholderFragment().apply {
+                Log.e("SECTIOIN NUMBER","$sectionNumber")
+                inte = "$sectionNumber"
                 arguments = Bundle().apply {
-                    putInt(ARG_SECTION_NUMBER, sectionNumber)
+                    putString(ARG_SECTION_NUMBER, "$sectionNumber")
                 }
             }
         }
